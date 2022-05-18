@@ -233,7 +233,11 @@ client.on('message', async (msg) => {
                 start();
             })
         }catch (err) {
-            msg.reply('terjadi error harap periksa link anda kembali !')
+            try {
+                msg.reply('terjadi error harap periksa link anda kembali !')
+            }catch (err) {
+                console.log(err)
+            }
         }
     }
 })
@@ -245,7 +249,8 @@ client.on('message', async (msg) => {
         msg.reply('*wait kak* permintaan sedang di proses.....')
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
         await delay(1000)
-        hx.lirik(link)
+        try{
+            hx.lirik(link)
             .then(result => {
                 const hasil = result.lirik
                 const thumb = result.thumb
@@ -258,7 +263,14 @@ client.on('message', async (msg) => {
             }).catch(err => {
                 msg.reply('saya tidak menemukan apapun ):')
             });
+        }catch (err) {
+            try {
+                msg.reply('opss terjadi error')
+            }catch (err) {
+                console.log(err)
+            }
         }
+    }
 });
 
 client.on('message', async (msg) => {
@@ -268,11 +280,12 @@ client.on('message', async (msg) => {
             msg.reply('fitur character telah di ubah menjadi self mode\nchat privat only')
 
         } else {
-            const link = msg.body.slice(7);
-            msg.reply('*wait kak* permintaan sedang di proses.....')
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-            await delay(500)
-            hx.chara(link)
+            try{
+                const link = msg.body.slice(7);
+                msg.reply('*wait kak* permintaan sedang di proses.....')
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+                await delay(500)
+                hx.chara(link)
                 .then(result => {
                     const hasil = (random_item(result))
                     console.log(hasil)
@@ -290,8 +303,15 @@ client.on('message', async (msg) => {
                 }).catch(err => {
                     msg.reply('saya tidak menemukan apapun ):')
                 });
+            }catch (err) {
+                try {
+                    msg.reply('opss terjadi error')
+                }catch (err) {
+                    console.log(err)
+                }
+            }
         }
-        }
+    }
 });
 
 client.on('message', async (msg) => {
@@ -300,11 +320,12 @@ client.on('message', async (msg) => {
         if (cha.isGroup){
             msg.reply('fitur pinterest akan berfungsi di obrolan pribadi')  
         }else {
-            const link = msg.body.slice(6);
-            msg.reply('*wait kak* permintaan sedang di proses.....')
-            const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
-            await delay(500)
-            hx.pinterest(link)
+            try{
+                const link = msg.body.slice(6);
+                msg.reply('*wait kak* permintaan sedang di proses.....')
+                const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+                await delay(500)
+                hx.pinterest(link)
                 .then(result => {
                     const hasil = (random_item(result))
                     console.log(hasil)
@@ -317,6 +338,13 @@ client.on('message', async (msg) => {
                 }).catch(err => {
                     msg.reply('saya tidak menemukan apapun ):')
                 });
+            }catch (err) {
+                try {
+                    msg.reply('opss terjadi error')
+                }catch (err) {
+                    console.log(err)
+                }
+            }
           }
     }
 });
@@ -338,7 +366,11 @@ client.on('message', async (msg) => {
                 console.error(err);
             });
         }catch (err) {
-            msg.reply('error')
+            try {
+                msg.reply('opss terjadi error')
+            }catch (err) {
+                console.log(err)
+            }
         }
         
     }
@@ -435,7 +467,12 @@ client.on('group_join', async (notification) => {
     mentions.push(con)
     const nama = chat.name
     //let button = new Buttons();
-    await client.sendMessage(chatId, `『 *WELLCOME* 』\n\nhi @${usr} selamat datang di ${nama}\n\n📋 intro dulu supaya pada kenal\n🍂nama :\n🍂umur :\n🍂askot :\n\nsemoga kamu betah di sini dan jangan lupa untuk mematuhi peraturan yang ada ya`, {mentions});
+    try{
+        await client.sendMessage(chatId, `『 *WELLCOME* 』\n\nhi @${usr} selamat datang di ${nama}\n\n📋 intro dulu supaya pada kenal\n🍂nama :\n🍂umur :\n🍂askot :\n\nsemoga kamu betah di sini dan jangan lupa untuk mematuhi peraturan yang ada ya`, {mentions});
+
+    }catch (err) {
+        console.log(err)
+    }
 });
 
 client.on('group_leave', async (notification) => {
@@ -444,16 +481,21 @@ client.on('group_leave', async (notification) => {
     const chat = await notification.getChat()
     const nama = chat.name
     const contact = await notification.getRecipients();
-    await client.sendMessage(chatId, `『 *sayonara* 』 ${contact[0].name}\n\nsemoga kamu tenang 😅`,'SAMPAI JUMPA',' ©️ Bot dark moon');
+    try{
+        await client.sendMessage(chatId, `『 *sayonara* 』 ${contact[0].name}\n\nsemoga kamu tenang 😅`,'SAMPAI JUMPA',' ©️ Bot dark moon');
+    }catch (err) {
+        console.log(rr)
+    }
 });
 
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!tts ')) {
-        const te = msg.body.slice(5);
-        const words = te.split(' ')[0];
-        str = te.replace(words, "");
-        var gtts = new gTTS(str, words);
-        gtts.save('tts.mp3', function (err, result) {
+        try{
+            const te = msg.body.slice(5);
+            const words = te.split(' ')[0];
+            str = te.replace(words, "");
+            var gtts = new gTTS(str, words);
+            gtts.save('tts.mp3', function (err, result) {
             if(err) { throw new Error(err) }
             console.log(result);
             const start = async function(a, b) {
@@ -462,7 +504,14 @@ client.on('message', async (msg) => {
                 chat.sendMessage(media)
             }
             start();
-        });
+          });
+        }catch (err) {
+            try {
+                msg.reply('opss terjadi error')
+            }catch (err) {
+                console.log(err)
+            }
+        }
 
     }
 });
