@@ -39,6 +39,7 @@ const PORT = process.env.PORT || 3000;
  
 client.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
+    console.log(qr)
 });
 
 
