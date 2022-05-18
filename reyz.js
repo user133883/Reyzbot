@@ -105,10 +105,9 @@ client.on('message', async (msg) => {
                 const ta = res.data
                 let text = ""
                 for(let te of res.data) {
-                    for(let tu of te.jawaban) {
                         const per = te.pertanyaan
-                        text += `*pertanyaan* = ${per}\n\n*jawaban* = ${tu.text}\n\n`
-                    }
+                        const ja = te.jawaban[0].text
+                        text += `*pertanyaan* = ${per}\n\n*jawaban* = ${ja}\n\n`
                 }
                 msg.reply(text)
             });
