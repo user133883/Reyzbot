@@ -117,7 +117,7 @@ client.on('message', async (msg) => {
             brainly(link).then(res => {
                 const ta = res.data
                 let text = ""
-                for(let te of ta) {
+                for(let te of res.data) {
                     for(let tu of te.jawaban) {
                         const per = te.pertanyaan
                         text += `*pertanyaan* = ${per}\n\n*jawaban* = ${tu.text}\n\n`
@@ -142,7 +142,7 @@ client.on('message', async (msg) => {
             ta = res.stories
             total = res.total
             let text = ""
-            for(let te of ta) {
+            for(let te of res.stories) {
                 judul = te.title
                 des = te.description
                 med = te.cover
@@ -158,7 +158,7 @@ client.on('message', async (msg) => {
             ta = res.stories
             total = res.total
             let text = ""
-            for(let te of ta) {
+            for(let te of res.stories) {
                 judul = te.title
                 des = te.description
                 med = te.cover
