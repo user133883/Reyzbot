@@ -14,7 +14,6 @@
     "fs": "^0.0.1-security",
     "gtts": "^0.2.1",
     "hxz-api": "^1.0.1",
-    "express": "^4.18.1",
     "mime-types": "^2.1.35",
     "moment-timezone": "^0.5.34",
     "qrcode-terminal": "^0.12.0",
