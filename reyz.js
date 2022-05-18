@@ -99,21 +99,19 @@ client.on('message', async (msg) => {
             }
         })();
     }else if(msg.body.startsWith('!brainly ')) {
-        const link = msg.body.slice(9);
-        try {
+            const link = msg.body.slice(9);
             brainly(link).then(res => {
-                const ta = res.data
+                //const pr = JSON.stringify(res)
+                const st = JSON.parse(res)
+                const ta = st.data
                 let text = ""
-                for(let te of res.data) {
-                        const per = te.pertanyaan
-                        const ja = te.jawaban[0].text
+                for (let Y of st.data) {
+                        const per = Y.pertanyaan
+                        const ja = Y.jawaban[0].text
                         text += `*pertanyaan* = ${per}\n\n*jawaban* = ${ja}\n\n`
                 }
                 msg.reply(text)
             });
-        } catch (error) {
-            msg.reply('opss saya tidak menemukan apapun')
-        }
     }else if(msg.body.startsWith('!bolekah')) {
         const pesan = ['boleh','boleh boleh aja','tidak boleh','jangan','iya','nggak boleh']
         const hasil = (random_item(pesan))
