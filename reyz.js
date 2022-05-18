@@ -101,8 +101,9 @@ client.on('message', async (msg) => {
     }else if(msg.body.startsWith('!brainly ')) {
             const link = msg.body.slice(9);
             brainly(link).then(res => {
-                //const pr = JSON.stringify(res)
-                const st = JSON.parse(res)
+                const pr = JSON.stringify(res)
+                const st = JSON.parse(pr)
+                //console.log(st)
                 const ta = st.data
                 let text = ""
                 for (let Y of st.data) {
