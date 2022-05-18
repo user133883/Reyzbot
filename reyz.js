@@ -34,7 +34,17 @@ var wit = moment().tz('Asia/Jayapura').format('HH:mm:ss');
 var wita = moment().tz('Asia/Makassar').format('HH:mm:ss');
 var wib = moment().tz('Asia/Jakarta').format('HH:mm:ss');
 
-const PORT = process.env.PORT || 3000;
+var express = require('express');
+var app     = express();
+
+app.set('port', (process.env.PORT || 5000));
+
+app.get('/', function(request, response) {
+    var result = 'App is running'
+    response.send(result);
+}).listen(app.get('port'), function() {
+    console.log('App is running, server is listening on port ', app.get('port'));
+});
 
  
 client.on('qr', (qr) => {
