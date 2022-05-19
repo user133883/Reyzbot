@@ -260,7 +260,7 @@ client.on('message', async (msg) => {
                 }
                 start();
             }).catch(err => {
-                msg.reply('saya tidak menemukan apapun ):')
+                msg.reply('terjadi error !')
                 console.log(err)
             });
         }catch (err) {
@@ -274,7 +274,7 @@ client.on('message', async (msg) => {
 });
 
 client.on('message', async (msg) => {
-    if(msg.body.startsWith('!chara ')) {
+    if(msg.body.startsWith('!slicekode404 ')) {
         let cha = msg.getChat();
         if (cha.isGroup) {
             msg.reply('fitur character telah di ubah menjadi self mode\nchat privat only')
