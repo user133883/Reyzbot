@@ -1,6 +1,8 @@
 //const { Client, Location, List, Buttons, LocalAuth } ');
 const hx = require('hxz-api');
 const brainly = require('brainly-scraper');
+const cheerio = require("cheerio");
+const axios = require("axios");
 const translate = require('@vitalets/google-translate-api');
 const fs = require('fs');
 const qrcode = require('qrcode-terminal');
@@ -88,6 +90,34 @@ client.on('message', async (msg) => {
     }
 })
 
+client.on('message', async (msg) => {
+    if(msg.body.startsWith('!kbbi ')) {
+        const links = msg.body.slice(6)
+        xios("https://kbbi.kemdikbud.go.id/entri/"+links).then(res => {
+        const htmldata = res.data
+        const $ = cheerio.load(htmldata)
+        const listItems = $("ol li")
+        const title = $("h2").text()
+        const js = []
+        listItems.each((idx, il) => {
+            const data = $(il).text()
+            js.push({
+                title,
+                data
+            })
+        })
+        console.log(js)
+        let teks = ""
+        for(let jus of js) {
+            teks += `${jus.data}\n`
+        }
+        msg.reply(`*${title}*\n\n${teks}`)
+    
+       }).catch (err => {
+           msg.reply('terjadi error !\n\n\n'+err)
+      }) 
+    }
+})
 
 client.on('message', async (msg) => {
     const pe = msg.boy
