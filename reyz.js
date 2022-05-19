@@ -75,6 +75,23 @@ client.on('message', async (msg) => {
 
 
 client.on('message', async (msg) => {
+    if(msg.body.startsWith('!brainly ')) {
+        const teks = msg.body.slice(9)
+        brainly(teks).then(res => {
+            let text = ""
+            for(Y of res.data) {
+                const pertanyaan = Y.Pertanyaan
+                const jawaban = Y.jawaban[0].text
+                text += `*pertanyaan* = ${pertanyaan}\n\n*jawaban* = ${jawaban}\n\n`
+        
+            }
+            msg.reply(text)
+        });
+    }
+})
+
+
+client.on('message', async (msg) => {
     const pe = msg.boy
     if(msg.body.startsWith('!apakah')) {
         const pesan = ['iya','mungkin sih','g tau saya','tidak','tidak mungkin','sepertinya iya','sepertinya tidak','sudah pasti tidak','iya iya iya','yoi','iya in','mungkin','yes']
@@ -98,21 +115,6 @@ client.on('message', async (msg) => {
                 //=> Typeof wikiError
             }
         })();
-    }else if(msg.body.startsWith('!brainly ')) {
-            const link = msg.body.slice(9);
-            brainly(link).then(res => {
-                const pr = JSON.stringify(res)
-                const st = JSON.parse(pr)
-                //console.log(st)
-                const ta = st.data
-                let text = ""
-                for (let Y of st.data) {
-                        const per = Y.pertanyaan
-                        const ja = Y.jawaban[0].text
-                        text += `*pertanyaan* = ${per}\n\n*jawaban* = ${ja}\n\n`
-                }
-                msg.reply(text)
-            });
     }else if(msg.body.startsWith('!bolekah')) {
         const pesan = ['boleh','boleh boleh aja','tidak boleh','jangan','iya','nggak boleh']
         const hasil = (random_item(pesan))
@@ -257,6 +259,7 @@ client.on('message', async (msg) => {
                 start();
             }).catch(err => {
                 msg.reply('saya tidak menemukan apapun ):')
+                console.log(err)
             });
         }catch (err) {
             try {
@@ -280,22 +283,17 @@ client.on('message', async (msg) => {
                 msg.reply('*wait kak* permintaan sedang di proses.....')
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
                 await delay(500)
-                hx.chara(link)
-                .then(result => {
+                hx.chara(link).then(result => {
                     const hasil = (random_item(result))
                     console.log(hasil)
-                    try{
-                        const start = async function(a, b) {
-                            const media = await MessageMedia.fromUrl(hasil)
-                            const chat = await msg.getChat()
-                            await chat.sendMessage(media, {caption: link})
-                        }
-                        start();
-                    }catch (err) {
-                        msg.reply('terjadi error')
+                    const start = async function(a, b) {
+                        const media = await MessageMedia.fromUrl(hasil)
+                        const chat = await msg.getChat()
+                        await chat.sendMessage(media, {caption: link})
                     }
-                    
+                    start();
                 }).catch(err => {
+                    console.log(err)
                     msg.reply('saya tidak menemukan apapun ):')
                 });
             }catch (err) {
@@ -308,6 +306,7 @@ client.on('message', async (msg) => {
         }
     }
 });
+
 
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!pint ')) {
