@@ -11,6 +11,7 @@
   "dependencies": {
     "@vitalets/google-translate-api": "^8.0.0",
     "brainly-scraper": "^1.0.3",
+    "brainly-scraper-v2": "^2.0.13",
     "fs": "^0.0.1-security",
     "gtts": "^0.2.1",
     "hxz-api": "^1.0.1",
