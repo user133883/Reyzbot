@@ -79,12 +79,8 @@ client.on('message', async (msg) => {
         const teks = msg.body.slice(9)
         brainly(teks).then(res => {
             let text = ""
-            const dt = res.data
-            //let pertanyaan = res.data.map(a => a. pertanyaan)
-            let jawabn = dt.map(a => a. jawaban[0].text)
-            for (jaw of jawabn) {
-                   text += `*jawab* = ${jaw}\n\n`
-                
+            for (const value of Object(res.data)) {
+                text += `*pertanyaan* = ${value.pertanyaan}\n\n*jawaban* = ${value.jawaban[0].text}\n\n`
             }
             msg.reply(text)
         });
