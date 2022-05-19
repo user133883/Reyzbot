@@ -77,13 +77,10 @@ client.on('message', async (msg) => {
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!brainly ')) {
         const teks = msg.body.slice(9)
-        brainly(teks).then(res => {
-            let text = ""
-            for (const value of Object(res.data)) {
-                text += `*pertanyaan* = ${value.pertanyaan}\n\n*jawaban* = ${value.jawaban[0].text}\n\n`
-            }
-            msg.reply(text)
-        });
+        let res = await brain.searchWithMT(teks, 'id')
+        console.log(res)
+        let result = res.map(a => a.question.content);
+        console.log(result)
     }
 })
 
