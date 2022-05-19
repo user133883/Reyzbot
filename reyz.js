@@ -80,9 +80,10 @@ client.on('message', async (msg) => {
     if(msg.body.startsWith('!brainly ')) {
         const teks = msg.body.slice(9)
         let res = await brain.searchWithMT(teks, 'id')
-        console.log(res)
+        //console.log(res)
         let result = res.map(a => a.question.content);
         console.log(result)
+        msg.reply(result)
     }
 })
 
