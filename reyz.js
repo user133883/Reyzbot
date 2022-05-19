@@ -91,7 +91,7 @@ client.on('message', async (msg) => {
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!kbbi ')) {
         const links = msg.body.slice(6)
-        xios("https://kbbi.kemdikbud.go.id/entri/"+links).then(res => {
+        axios("https://kbbi.kemdikbud.go.id/entri/"+links).then(res => {
         const htmldata = res.data
         const $ = cheerio.load(htmldata)
         const listItems = $("ol li")
