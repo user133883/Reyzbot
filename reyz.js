@@ -1,4 +1,5 @@
 //const { Client, Location, List, Buttons, LocalAuth } ');
+const ryz = require('./func.js')
 const hx = require('hxz-api');
 const brainly = require('brainly-scraper');
 const cheerio = require("cheerio");
@@ -91,29 +92,26 @@ client.on('message', async (msg) => {
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!kbbi ')) {
         const links = msg.body.slice(6)
-        axios("https://kbbi.kemdikbud.go.id/entri/"+links).then(res => {
+        axios('https://kbbi.kemdikbud.go.id/entri/'+links).then(res => {
         const htmldata = res.data
         const $ = cheerio.load(htmldata)
-        const listItems = $("ol li")
-        const title = $("h2").text()
-        const js = []
-        listItems.each((idx, il) => {
-            const data = $(il).text()
-            js.push({
-                title,
-                data
-            })
+        let hasil = {};
+        hasil.arti = null
+        hasil.title = null
+        $('.container').filter(function (a, b) {
+            hasil.title = $(this).find('h2').text().trim() == ''
+                ? null
+                : $(this).find('h2').text().trim(),
+        
+                hasil.arti = $(this).find('li').eq(0).text().replace(/\s+/g, ' ').trim() == ''
+                    ? null
+                    : $(this).find('li').eq(0).text().replace(/\s+/g, ' ').trim()
+            });
+        //console.log(hasil)
+        msg.reply(`${hasil.title}\n\n${hasil.arti}`)
+        }).catch (err => {
+            msg.reply('error')
         })
-        console.log(js)
-        let teks = ""
-        for(let jus of js) {
-            teks += `${jus.data}\n`
-        }
-        msg.reply(`*${title}*\n\n${teks}`)
-    
-       }).catch (err => {
-           msg.reply('terjadi error !\n\n\n'+err)
-      }) 
     }
 })
 
@@ -193,7 +191,7 @@ client.on('message', async (msg) => {
     if(msg.body.startsWith('!ytmp3 ')) {
         const link = msg.body.slice(7)
         msg.reply('Downoad media dari youtube...')
-        hx.youtube(link).then(result => {
+        ryz.youtube(link).then(result => {
             const link = result.mp3
             const id = result.id+".mp3"
             const title = result.title
@@ -233,7 +231,7 @@ client.on('message', async (msg) => {
         const link = msg.body.slice(7)
         msg.reply('Downoad media dari youtube...')
         try{
-            hx.youtube(link).then(result => {
+            ryz.youtube(link).then(result => {
                 //const link = result.mp3
                 //const id = result.id+".mp3"
                 const title = result.title
@@ -273,7 +271,7 @@ client.on('message', async (msg) => {
         const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
         await delay(1000)
         try{
-            hx.lirik(link)
+            ryz.lirik(link)
             .then(result => {
                 const hasil = result.lirik
                 const thumb = result.thumb
@@ -309,7 +307,7 @@ client.on('message', async (msg) => {
                 msg.reply('*wait kak* permintaan sedang di proses.....')
                 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
                 await delay(500)
-                hx.chara(link).then(result => {
+                ryz.chara(link).then(result => {
                     const hasil = (random_item(result))
                     console.log(hasil)
                     const start = async function(a, b) {
@@ -753,6 +751,7 @@ status = online ✅
         ╠👾!lirik  (kata kunci)
         ╠👾!wp  (kata kunci)
         ╠👾!wpall  (kata kunci)
+	╠👾!kbbi (kata kunci)
         ╠══════════════
         ╠ *FUN*
         ╠══════════════
