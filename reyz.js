@@ -699,7 +699,7 @@ client.on('message', async msg => {
     var pag = 'selamat siang kak  🏖'
 }
    if (jam < '13:30') {
-    var wak = 'https://i.pinimg.com/564x/7f/db/26/7fdb269b83029fb7ddff990b6fa7df2c.jpg'
+    var wak = 'https://i.pinimg.com/564x/d7/34/50/d73450a09a8dbc48f51d3119dbdc3343.jpg'
     var pag = 'selamat siang kak 🏖'
 }
    if (jam < '09:30') {
