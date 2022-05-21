@@ -76,6 +76,37 @@ client.on('message', async (msg) => {
         }
 });
 
+client.on('message', async (msg) => {
+    if(msg.body === '!infogempa') {
+        axios.get('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json').then(({ data }) => {
+        const tanggal = data.Infogempa.gempa.Tanggal
+        const jam = data.Infogempa.gempa.Jam
+        const kordinat = data.Infogempa.gempa.Coordinates
+        const lintang = data.Infogempa.gempa.Lintang
+        const bujur = data.Infogempa.gempa.Bujur
+        const magnitude = data.Infogempa.gempa.Magnitude
+        const Kedalaman = data.Infogempa.gempa.Kedalaman
+        const Wilayah = data.Infogempa.gempa.Wilayah
+        const potensi = data.Infogempa.gempa.Potensi
+        const dirasakan = data.Infogempa.gempa.Dirasakan
+        msg.reply(`
+    *INFO GEMPA*
+
+Tanggal = ${tanggal}
+Jam = ${jam}
+Kordinat = ${kordinat}
+Lintang = ${lintang}
+Bujur = ${bujur}
+Magnitude = ${magnitude}
+Kedalaman = ${Kedalaman}
+Wilayah = ${Wilayah}
+Potensi = ${potensi}
+Dirasakan = ${dirasakan}  
+        `)
+      })
+    }
+})
+
 
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!brainly ')) {
@@ -296,7 +327,7 @@ client.on('message', async (msg) => {
 });
 
 client.on('message', async (msg) => {
-    if(msg.body.startsWith('!slicekode404 ')) {
+    if(msg.body.startsWith('!chara ')) {
         let cha = msg.getChat();
         if (cha.isGroup) {
             msg.reply('fitur character telah di ubah menjadi self mode\nchat privat only')
@@ -780,6 +811,10 @@ status = online ✅
         ╠══════════════
         ╠👾!sticker
         ╠👾!s
+	╠══════════════
+        ╠ *BMKG*
+        ╠══════════════
+	╠👾!infogempa
         `
         await client.sendMessage(msg.from, media, {caption: menuu}, {mentions: [contact]})
     }else if(msg.body === '!start') {
