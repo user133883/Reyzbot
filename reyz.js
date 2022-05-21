@@ -542,7 +542,7 @@ client.on('group_leave', async (notification) => {
     const nama = chat.name
     const contact = await notification.getRecipients();
     try{
-        await client.sendMessage(chatId, `『 *sayonara* 』 ${contact[0].name}\n\nsemoga kamu tenang 😅`,'SAMPAI JUMPA',' ©️ Bot dark moon');
+        await client.sendMessage(chatId, `『 *sayonara* \n\nsemoga kamu tenang 😅`,'SAMPAI JUMPA',' ©️ Bot dark moon');
     }catch (err) {
         console.log(rr)
     }
@@ -755,66 +755,66 @@ status = online ✅
 
     🚀 *DAFTAR MENU BOT* 🚀
 
-        ╔══════════════
-        ╠ *GROUP CHAT*
-        ╠══════════════
-        ╠👾!kick (reply)
-        ╠👾!everyone
-        ╠👾!promote (reply)
-        ╠👾!demote (reply)
-        ╠👾!close
-        ╠👾!open
-        ╠👾!chat
-        ╠👾!delete (reply)
-        ╠👾!link
-        ╠👾!desc (text)
-        ╠👾!title (text)
-        ╠══════════════
-        ╠ *PICT*
-        ╠══════════════
-        ╠👾!pint  (kata kunci)
-        ╠👾!chara (kata kunci)
-        ╠══════════════
-        ╠ *SEARCH*
-        ╠══════════════
-        ╠👾!brainly  (kata kunci)
-        ╠👾!wiki  (kata kunci)
-        ╠👾!lirik  (kata kunci)
-        ╠👾!wp  (kata kunci)
-        ╠👾!wpall  (kata kunci)
-	╠👾!kbbi (kata kunci)
-        ╠══════════════
-        ╠ *FUN*
-        ╠══════════════
-        ╠👾!apakah  (text)
-        ╠👾!bolehkah  (text)
-        ╠👾!kapan  (text)
-        ╠👾!hbd  (text)
-        ╠👾!tercantik
-        ╠👾!terganteng
-        ╠👾!terpintar
-        ╠👾!tergeblek
-        ╠👾!time (text)
-        ╠👾!ping
-        ╠══════════════
-        ╠ *TRANSLATE*
-        ╠══════════════
-        ╠👾!tts (text)
-        ╠👾!tr (text)
-        ╠══════════════
-        ╠ *YOUTUBE DL*
-        ╠══════════════
-        ╠👾!ytmp3 (link)
-        ╠👾!ytmp4 (link)
-        ╠══════════════
-        ╠ *STICKER*
-        ╠══════════════
-        ╠👾!sticker
-        ╠👾!s
-	╠══════════════
-        ╠ *BMKG*
-        ╠══════════════
-	╠👾!infogempa
+══════════════
+*GROUP CHAT*
+══════════════
+👾!kick (reply)
+👾!everyone
+👾!promote (reply)
+👾!demote (reply)
+👾!close
+👾!open
+👾!chat
+👾!delete (reply)
+👾!link
+👾!desc (text)
+👾!title (text)
+══════════════
+*PICT*
+══════════════
+👾!pint  (kata kunci)
+👾!chara (kata kunci)
+══════════════
+*SEARCH*
+══════════════
+👾!brainly  (kata kunci)
+👾!wiki  (kata kunci)
+👾!lirik  (kata kunci)
+👾!wp  (kata kunci)
+👾!wpall  (kata kunci)
+👾!kbbi (kata kunci)
+══════════════
+*FUN*
+══════════════
+👾!apakah  (text)
+👾!bolehkah  (text)
+👾!kapan  (text)
+👾!hbd  (text)
+👾!tercantik
+👾!terganteng
+👾!terpintar
+👾!tergeblek
+👾!time (text)
+👾!ping
+══════════════
+*TRANSLATE*
+══════════════
+👾!tts (text)
+👾!tr (text)
+══════════════
+*YOUTUBE DL*
+══════════════
+👾!ytmp3 (link)
+👾!ytmp4 (link)
+══════════════
+*STICKER*
+══════════════
+👾!sticker
+👾!s
+══════════════
+*BMKG*
+══════════════
+👾!infogempa
         `
         await client.sendMessage(msg.from, media, {caption: menuu}, {mentions: [contact]})
     }else if(msg.body === '!start') {
