@@ -147,6 +147,40 @@ client.on('message', async (msg) => {
 })
 
 client.on('message', async (msg) => {
+    if(msg.body.startsWith('!cocok ')) {
+        const nam = msg.body.slice(7)
+        const nama = nam.split('+')
+        const nama1 = nama[0]
+        const nama2 = nama[1]
+        axios(`https://www.primbon.com/kecocokan_nama_pasangan.php?nama1=${nama1}&nama2=${nama2}&proses=+Submit%21+`).then(res => {
+        try{
+            const data = res.data
+            const $ = cheerio.load(data)
+            const cck = $('#body').text().split(nama2)[1].replace('< Hitung Kembali', '').split('\n')[0];
+            const pos = cck.split('Sisi Negatif Anda: ')[0].replace('Sisi Positif Anda: ', '')
+            const neg = cck.split('Sisi Negatif Anda: ')[1]
+            const lov = 'https://www.primbon.com/' + $('#body > img').attr('src');
+            const start = async function(a, b) {
+                const media = await MessageMedia.fromUrl(lov)
+                const chat = await msg.getChat()
+                await chat.sendMessage(media, {caption : `
+*nama anda* = ${nama1}
+*nama pasangan* = ${nama2}
+*sisi postif* = ${pos}
+*sisi negatif* = ${neg}
+
+sumber : primbon.com
+                `})
+            }
+            start();
+        }catch (err) {
+            msg.reply('error !')
+        }
+      })
+    }
+})
+
+client.on('message', async (msg) => {
     const pe = msg.boy
     if(msg.body.startsWith('!apakah')) {
         const pesan = ['iya','mungkin sih','g tau saya','tidak','tidak mungkin','sepertinya iya','sepertinya tidak','sudah pasti tidak','iya iya iya','yoi','iya in','mungkin','yes']
@@ -796,6 +830,7 @@ status = online ✅
 👾!tergeblek
 👾!time (text)
 👾!ping
+👾!cocok "nama kamu + nama pasangan"
 ══════════════
 *TRANSLATE*
 ══════════════
