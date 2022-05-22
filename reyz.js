@@ -1046,8 +1046,7 @@ client.on('message', async (msg) => {
                         if(participant.id._serialized === authorid) {
                             if (participant.isAdmin) {
                                 try {
-                                    await chat.demoteParticipants([from])
-                                    msg.reply('telah di turunkan mejadi member !')
+                                    await chat.removeParticipants([from])
                                     break;
                                 } catch (err) {
                                     msg.reply('terjadi error !')
