@@ -1008,12 +1008,12 @@ client.on('message', async (msg) => {
 })
 
 client.on('message', async (msg) => {
+    let chat = await msg.getChat();
     if(msg.body === '!kick') {
         const qoet = await msg.getQuotedMessage();
         const fromm = qoet.author
         console.log(qoet)
         //console.log(msg)
-        let chat = await msg.getChat();
         //console.log(chat)
         if (chat.isGroup) {
             const authorid = msg.author
@@ -1034,21 +1034,52 @@ client.on('message', async (msg) => {
                     }
             }
         }      
+    }else if(msg.body.startsWith('!kick ')) {
+        const num = msg.body.slice(6)
+        if (num.startsWith("@")) {
+            const from = msg.mentionedIds
+            if(from === undefined || false) return msg.reply('tag pengguna !')
+            if (chat.isGroup) {
+                const authorid = msg.author
+                for(let participant of chat.participants) {
+                        //console.log(participant)
+                        if(participant.id._serialized === authorid) {
+                            if (participant.isAdmin) {
+                                try {
+                                    await chat.demoteParticipants([from])
+                                    msg.reply('telah di turunkan mejadi member !')
+                                    break;
+                                } catch (err) {
+                                    msg.reply('terjadi error !')
+                                    break;
+                                }
+                            }else {
+                                msg.reply('anda bukan admin')
+                                break;
+                                
+                            }
+                        }
+                }
+            }
+        }else {
+            msg.reply('tag pengguna')
+        }
     }
 
 });
 
 
 client.on('message', async (msg) => {
+    let chat = await msg.getChat();
     if( msg.body === '!promote') {
-        let chat = await msg.getChat();
         const qoet = await msg.getQuotedMessage();
         const fromm = qoet.author
         //const par = chat.
-        //console.log(chat)
+        console.log(fromm)
         if (chat.isGroup) {
             const authorId = msg.author;
             for(let participant of chat.participants) {
+                console.log(participant)
                 if(participant.id._serialized === authorId) {
                     if (participant.isAdmin) {
                         try{
@@ -1064,13 +1095,43 @@ client.on('message', async (msg) => {
                 }
             }
         }      
+    }else if(msg.body.startsWith('!promote ')) {
+        const num = msg.body.slice(9)
+        if (num.startsWith("@")) {
+            const from = msg.mentionedIds
+            if(from === undefined || false) return msg.reply('tag pengguna !')
+            if (chat.isGroup) {
+                const authorid = msg.author
+                for(let participant of chat.participants) {
+                        //console.log(participant)
+                        if(participant.id._serialized === authorid) {
+                            if (participant.isAdmin) {
+                                try {
+                                    await chat.promoteParticipants([from])
+                                    msg.reply('telah di jadikan admin !')
+                                    break;
+                                } catch (err) {
+                                    msg.reply('terjadi error !')
+                                    break;
+                                }
+                            }else {
+                                msg.reply('anda bukan admin')
+                                break;
+                                
+                            }
+                        }
+                }
+            }
+        }else {
+            msg.reply('tag pengguna')
+        }
     }
 
 });
 
 client.on('message', async (msg) => {
+    let chat = await msg.getChat();
     if( msg.body === '!demote') {
-        let chat = await msg.getChat();
         const qoet = await msg.getQuotedMessage();
         const fromm = qoet.author
         //const par = chat.
@@ -1093,9 +1154,40 @@ client.on('message', async (msg) => {
                 }
             }
         }      
+    }else if(msg.body.startsWith('!demote ')) {
+        const num = msg.body.slice(8)
+        if (num.startsWith("@")) {
+            const from = msg.mentionedIds
+            if(from === undefined || false) return msg.reply('tag pengguna !')
+            if (chat.isGroup) {
+                const authorid = msg.author
+                for(let participant of chat.participants) {
+                        //console.log(participant)
+                        if(participant.id._serialized === authorid) {
+                            if (participant.isAdmin) {
+                                try {
+                                    await chat.demoteParticipants([from])
+                                    msg.reply('telah di turunkan mejadi member !')
+                                    break;
+                                } catch (err) {
+                                    msg.reply('terjadi error !')
+                                    break;
+                                }
+                            }else {
+                                msg.reply('anda bukan admin')
+                                break;
+                                
+                            }
+                        }
+                }
+            }
+        }else {
+            msg.reply('tag pengguna')
+        }
     }
 
 });
+
 
 
 
