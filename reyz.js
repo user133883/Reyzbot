@@ -107,19 +107,6 @@ Dirasakan = ${dirasakan}
     }
 })
 
-
-client.on('message', async (msg) => {
-    if(msg.body.startsWith('!brainly ')) {
-        const teks = msg.body.slice(9)
-        brainly(teks).then(res => {
-            console.log(res)
-        })
-        //let res = await brain.searchWithMT('sastra', 'id')
-        //let result = res.map(a => a.question.content);
-        
-    }
-})
-
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!kbbi ')) {
         const links = msg.body.slice(6)
@@ -811,7 +798,6 @@ status = online ✅
 ══════════════
 *SEARCH*
 ══════════════
-👾!brainly  (kata kunci)
 👾!wiki  (kata kunci)
 👾!lirik  (kata kunci)
 👾!wp  (kata kunci)
