@@ -104,7 +104,9 @@ Magnitude = ${magnitude}
 Kedalaman = ${Kedalaman}
 Wilayah = ${Wilayah}
 Potensi = ${potensi}
-Dirasakan = ${dirasakan}  
+Dirasakan = ${dirasakan} 
+
+https://www.bmkg.go.id
         `)
         }catch (err) {
             console.log(err)
