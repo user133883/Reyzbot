@@ -370,10 +370,7 @@ client.on('message', async (msg) => {
                         await chat.sendMessage(media, {caption: link})
                     }
                     start();
-                }).catch(err => {
-                    console.log(err)
-                    msg.reply('saya tidak menemukan apapun ):')
-                });
+                })
             }catch (err) {
                 try {
                     msg.reply('opss terjadi error')
