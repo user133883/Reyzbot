@@ -792,6 +792,7 @@ status = online ✅
 👾!link
 👾!desc (text)
 👾!title (text)
+👾!anti_link on/off
 ══════════════
 *PICT*
 ══════════════
