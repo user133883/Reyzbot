@@ -1389,13 +1389,21 @@ client.on('message', async (msg) => {
                         if(ket === 'on'){
                             const chatId = chat.id._serialized
                             antilink.push(chatId)
-                            fs.writeFileSync('./database/anti_link.json', JSON.stringify(anti))
+                            fs.writeFileSync('./database/anti_link.json', JSON.stringify(antilink))
                             msg.reply('anti link di grup ini aktif !')
                         }else if(ket === 'off') {
-                            const chatId = chat.id._serialized
-                            antilink.push(chatId)
-                            fs.writeFileSync('./database/anti_link.json', JSON.stringify(anti))
-                            msg.reply('anti link di grup ini di nonaktif kan !')
+                            try {
+                                 const chatId = chat.id._serialized
+                                 antilink.splice(chatId, 1)
+                                 fs.writeFileSync('./database/anti_link.json', JSON.stringify(antilink))
+                                 msg.reply('anti link di grup ini di nonaktif kan !')
+                           }catch (err) {
+                                   try{
+                                        msg.reply('telah di nonaktifkan')
+                                   }catch (err) {
+                                        console.log(err)
+                                   }
+                            }
                         }else{
                             msg.reply('beri keterangan off atau on')
                         }
