@@ -91,7 +91,8 @@ client.on('message', async (msg) => {
         const Wilayah = data.Infogempa.gempa.Wilayah
         const potensi = data.Infogempa.gempa.Potensi
         const dirasakan = data.Infogempa.gempa.Dirasakan
-        msg.reply(`
+        try{
+            msg.reply(`
     *INFO GEMPA*
 
 Tanggal = ${tanggal}
@@ -105,9 +106,13 @@ Wilayah = ${Wilayah}
 Potensi = ${potensi}
 Dirasakan = ${dirasakan}  
         `)
+        }catch (err) {
+            console.log(err)
+        }
       })
     }
 })
+
 
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!kbbi ')) {
@@ -349,8 +354,10 @@ client.on('message', async (msg) => {
     }
 });
 
+
+//not work
 client.on('message', async (msg) => {
-    if(msg.body.startsWith('!chara ')) {
+    if(msg.body.startsWith('!chara26r3 ')) {
         let cha = msg.getChat();
         if (cha.isGroup) {
             msg.reply('fitur character telah di ubah menjadi self mode\nchat privat only')
