@@ -36,7 +36,9 @@ const client = new Client({
 var wit = moment().tz('Asia/Jayapura').format('HH:mm:ss');
 var wita = moment().tz('Asia/Makassar').format('HH:mm:ss');
 var wib = moment().tz('Asia/Jakarta').format('HH:mm:ss');
- 
+
+const antilink = JSON.parse(fs.readFileSync('./database/anti_link.json'))
+
 client.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
     console.log(qr)
@@ -1374,6 +1376,67 @@ client.on('message', async (msg) => {
     }
 
 });
+
+client.on('message', async (msg) => {
+    const chat = await msg.getChat()
+    if(msg.body.startsWith('!anti_link ')) {
+        const ket = msg.body.slice(11)
+        const authorId = msg.author
+            for(let participant of chat.participants) {
+                if(participant.id._serialized === authorId) {
+                    if (participant.isAdmin) {
+                        if(ket === 'on'){
+                            const chatId = chat.id._serialized
+                            antilink.push(chatId)
+                            fs.writeFileSync('./database/anti_link.json', JSON.stringify(anti))
+                            msg.reply('anti link di grup ini aktif !')
+                        }else if(ket === 'off') {
+                            const chatId = chat.id._serialized
+                            antilink.push(chatId)
+                            fs.writeFileSync('./database/anti_link.json', JSON.stringify(anti))
+                            msg.reply('anti link di grup ini di nonaktif kan !')
+                        }else{
+                            msg.reply('beri keterangan off atau on')
+                        }
+                    }
+                }
+            }
+    }
+})
+
+client.on('message', async (msg) => {
+    if(msg.body.includes('https://chat.whatsapp.com/')) {
+        const chat = await msg.getChat()
+        const chatId = chat.id._serialized
+        const mem = msg.author
+        if(antilink.includes(chatId)) {
+            const qoet = await chat.getInviteCode()
+            const link = 'https://chat.whatsapp.com/'+qoet
+            if(msg.body.includes(link)) {
+                console.log()
+            }else {
+                for(let participant of chat.participants) {
+                    console.log(participant)
+                    if(participant.id._serialized === mem) {
+                        if (participant.isAdmin) {
+                            console.log()
+                            break;
+                        }else{
+                            try{
+                                msg.reply('link grup lain terdektesi !\n\nanda di larang mengirim link grup lain di grup ini')
+                                await chat.removeParticipants([mem])
+                                break;
+                            }catch (err) {
+                                console.log(err)
+                                break;
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+    }
+})
 
 
 client.on('error', (err) => {
