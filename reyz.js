@@ -1046,9 +1046,9 @@ client.on('message', async (msg) => {
         //console.log(msg)
         //console.log(chat)
         if (chat.isGroup) {
-            const authorid = msg.author
+            const authorId = msg.author;
             for(let participant of chat.participants) {
-                    if(participant.id._serialized === authorid ) {
+                    if(participant.id._serialized === authorId ) {
                         if (participant.isAdmin) {
                             try {
                                 await chat.removeParticipants([fromm])
@@ -1056,11 +1056,11 @@ client.on('message', async (msg) => {
                             } catch (err) {
                                 msg.reply('terjadi error !')
                             }
+                        }else {
+                            msg.reply('kamu bukan admin !')
+                            break;
                         }
                         
-                    }else {
-                        msg.reply('kamu bukan admin !')
-                        break;
                     }
             }
         }      
