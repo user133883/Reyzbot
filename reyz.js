@@ -38,6 +38,8 @@ var wita = moment().tz('Asia/Makassar').format('HH:mm:ss');
 var wib = moment().tz('Asia/Jakarta').format('HH:mm:ss');
 
 const antilink = JSON.parse(fs.readFileSync('./database/anti_link.json'))
+const _welcome = JSON.parse(fs.readFileSync('./database/welcome.json'))
+const _left = JSON.parse(fs.readFileSync('./database/left.json'))
 
 client.on('qr', (qr) => {
     qrcode.generate(qr, {small: true});
@@ -545,35 +547,42 @@ client.on('message', async (message) => {
 
 
 client.on('group_join', async (notification) => {
-    const chatId = notification.id.remote
-    const mem = notification.recipientIds
     const chat = await notification.getChat()
-    let mentions = [];
-    const contact = await notification.getRecipients();
-    const ID = contact[0].id._serialized
-    const usr = contact[0].number
-    const con = await client.getContactById(ID)
-    mentions.push(con)
-    const nama = chat.name
-    //let button = new Buttons();
-    try{
-        await client.sendMessage(chatId, `『 *WELLCOME* 』\n\nhi @${usr} selamat datang di ${nama}\n\n📋 intro dulu supaya pada kenal\n🍂nama :\n🍂umur :\n🍂askot :\n\nsemoga kamu betah di sini dan jangan lupa untuk mematuhi peraturan yang ada ya`, {mentions});
-
-    }catch (err) {
-        console.log(err)
+    const chatid = chat.id._serialized
+    if(_welcome.includes(chatid)) {
+        const chatID = notification.id.remote
+        const mem = notification.recipientIds
+        let mentions = [];
+        const contact = await notification.getRecipients();
+        const ID = contact[0].id._serialized
+        const usr = contact[0].number
+        const con = await client.getContactById(ID)
+        mentions.push(con)
+        const nama = chat.name
+        //let button = new Buttons();
+        try{
+            await client.sendMessage(chatID, `『 *WELLCOME* 』\n\nhi @${usr} selamat datang di ${nama}\n\n📋 intro dulu supaya pada kenal\n🍂nama :\n🍂umur :\n🍂askot :\n\nsemoga kamu betah di sini dan jangan lupa untuk mematuhi peraturan yang ada ya`, {mentions});
+    
+        }catch (err) {
+            console.log(err)
+        }
     }
 });
 
 client.on('group_leave', async (notification) => {
-    const chatId = notification.id.remote
-    const mem = notification.recipientIds
     const chat = await notification.getChat()
-    const nama = chat.name
-    const contact = await notification.getRecipients();
-    try{
-        await client.sendMessage(chatId, `『 *sayonara* \n\nsemoga kamu tenang 😅`,'SAMPAI JUMPA',' ©️ Bot dark moon');
-    }catch (err) {
-        console.log(rr)
+    const chatid = chat.id._serialized
+    if(_left.includes(chatid)) {
+        const chatId = notification.id.remote
+        const mem = notification.recipientIds
+        const chat = await notification.getChat()
+        const nama = chat.name
+        const contact = await notification.getRecipients();
+        try{
+            await client.sendMessage(chatId, `『 *sayonara* \n\nsemoga kamu tenang 😅`);
+        }catch (err) {
+            console.log(rr)
+        }
     }
 });
 
@@ -796,6 +805,8 @@ ${pag}
 👾!desc (text)
 👾!title (text)
 👾!anti_link on/off
+👾!welcome on/off
+👾!left on/off
 ══════════════
 *PICT*
 ══════════════
@@ -1380,6 +1391,71 @@ client.on('message', async (msg) => {
     }
 
 });
+
+client.on('message', async (msg) => {
+    const chat = await msg.getChat()
+    if(msg.body.startsWith('!welcome ')) {
+        const ket = msg.body.slice(9)
+        const authorId = msg.author
+            for(let participant of chat.participants) {
+                if(participant.id._serialized === authorId) {
+                    if (participant.isAdmin) {
+                        if(ket === 'on'){
+                            const chatId = chat.id._serialized
+                            antilink.push(chatId)
+                            fs.writeFileSync('./database/welcome.json', JSON.stringify(_welcome))
+                            msg.reply('welcome di grup ini aktif !')
+                        }else if(ket === 'off') {
+                            try {
+                                 const chatId = chat.id._serialized
+                                 antilink.splice(chatId, 1)
+                                 fs.writeFileSync('./database/welcome.json', JSON.stringify(_welcome))
+                                 msg.reply('welcome di grup ini di nonaktif kan !')
+                           }catch (err) {
+                                   try{
+                                        msg.reply('telah di nonaktifkan')
+                                   }catch (err) {
+                                        console.log(err)
+                                   }
+                            }
+                        }else{
+                            msg.reply('beri keterangan off atau on')
+                        }
+                    }
+                }
+            }
+    }else if(msg.body.startsWith('!left ')) {
+        const ket = msg.body.slice(6)
+        const authorId = msg.author
+            for(let participant of chat.participants) {
+                if(participant.id._serialized === authorId) {
+                    if (participant.isAdmin) {
+                        if(ket === 'on'){
+                            const chatId = chat.id._serialized
+                            antilink.push(chatId)
+                            fs.writeFileSync('./database/left.json', JSON.stringify(_left))
+                            msg.reply('pesan selamat tinggal di grup ini aktif !')
+                        }else if(ket === 'off') {
+                            try {
+                                 const chatId = chat.id._serialized
+                                 antilink.splice(chatId, 1)
+                                 fs.writeFileSync('./database/left.json', JSON.stringify(_left))
+                                 msg.reply('pesan selamat tinggal di grup ini di nonaktif kan !')
+                           }catch (err) {
+                                   try{
+                                        msg.reply('telah di nonaktifkan')
+                                   }catch (err) {
+                                        console.log(err)
+                                   }
+                            }
+                        }else{
+                            msg.reply('beri keterangan off atau on')
+                        }
+                    }
+                }
+            }
+    }
+})
 
 client.on('message', async (msg) => {
     const chat = await msg.getChat()
