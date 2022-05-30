@@ -807,6 +807,7 @@ ${pag}
 👾!anti_link on/off
 👾!welcome on/off
 👾!left on/off
+👾!hidetag (text)
 ══════════════
 *PICT*
 ══════════════
@@ -1008,34 +1009,105 @@ client.on('message', async (msg) => {
 
 
 client.on('message', async (msg) => {
-    if(msg.body === '!everyone') {
-        const chat = await msg.getChat();
+    const chat = await msg.getChat();
+    const authorId = msg.author;
+    if(chat.isGroup) {
+        if(msg.body === '!everyone') {
         
-        let text = "";
-        let mentions = [];
-
-        for(let participant of chat.participants) {
-            const contact = await client.getContactById(participant.id._serialized);
-            mentions.push(contact);
-            text += `@${participant.id.user} `;
+            let text = "";
+            let mentions = [];
+    
+            for(let participant of chat.participants) {
+                const contact = await client.getContactById(participant.id._serialized);
+                mentions.push(contact);
+                text += `@${participant.id.user} `;
+            }
+            for(let participant of chat.participants) {
+                if(participant.id._serialized === authorId ) {
+                    if (participant.isAdmin) {
+                        try {
+                            await chat.sendMessage(text, { mentions });
+                            break;
+                        } catch (err) {
+                            try {
+                                msg.reply('terjadi error')
+                                break;
+                            }catch {
+                                console.log(err)
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+    
+        }else if(msg.body.startsWith('!everyone ')) {
+            const tex = msg.body.slice(10);
+            
+            let text = `${tex} `;
+            let mentions = [];
+    
+            for(let participant of chat.participants) {
+                const contact = await client.getContactById(participant.id._serialized);
+                mentions.push(contact);
+                text += `@${participant.id.user} `;
+            }
+            for(let participant of chat.participants) {
+                if(participant.id._serialized === authorId ) {
+                    if (participant.isAdmin) {
+                        try {
+                            await chat.sendMessage(text, { mentions });
+                            break;
+                        } catch (err) {
+                            try {
+                                msg.reply('terjadi error')
+                                break;
+                            }catch {
+                                console.log(err)
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
+    }
+});
 
-        await chat.sendMessage(text, { mentions });
-
-    }else if(msg.body.startsWith('!everyone ')) {
-        const chat = await msg.getChat();
-        const tex = msg.body.slice(10);
+client.on('message', async (msg) => {
+    const chat = await msg.getChat();
+    if(chat.isGroup) {
+        if(msg.body.startsWith('!hidetag ')) {
+            const tex = msg.body.slice(8);
+            const authorId = msg.author;
+            
+            let text = `${tex}`;
+            let mentions = [];
         
-        let text = `${tex} `;
-        let mentions = [];
-
-        for(let participant of chat.participants) {
-            const contact = await client.getContactById(participant.id._serialized);
-            mentions.push(contact);
-            text += `@${participant.id.user} `;
+            for(let participant of chat.participants) {
+                const contact = await client.getContactById(participant.id._serialized);
+                mentions.push(contact);
+               
+            }
+            for(let participant of chat.participants) {
+                if(participant.id._serialized === authorId ) {
+                    if (participant.isAdmin) {
+                        try {
+                            await chat.sendMessage(text, { mentions });
+                            break;
+                        } catch (err) {
+                            try {
+                                msg.reply('terjadi error')
+                                break;
+                            }catch {
+                                console.log(err)
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
-        console.log(mentions)
-        await chat.sendMessage(text, { mentions });
     }
 });
 
