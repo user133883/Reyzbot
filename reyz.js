@@ -1,7 +1,7 @@
 //const { Client, Location, List, Buttons, LocalAuth } ');
 const ryz = require('./func.js')
-const hx = require('hxz-api');
-const brainly = require('brainly-scraper');
+//const hx = require('hxz-api');
+//const brainly = require('brainly-scraper');
 const cheerio = require("cheerio");
 const axios = require("axios");
 const translate = require('@vitalets/google-translate-api');
