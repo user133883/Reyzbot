@@ -870,7 +870,7 @@ gunakan perintah umum
 🚀 !start
         
         `
-        chat.sendMessage(media, {caption : start})
+        chat.sendMessage(start, {pag})
     }
 });
 
