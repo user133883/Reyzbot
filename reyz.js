@@ -470,6 +470,52 @@ client.on('message', async (msg) => {
 })
 
 client.on('message', async (message) => {
+    if(message.body.startsWith('!st ')){
+        console.log('1')
+        const nam = message.body.slice(4)
+        const nama = nam.split('+')
+        const nama1 = nama[0]
+        const nama2 = nama[1]
+        if(message.hasMedia){
+            console.log('2')
+           message.downloadMedia().then(media => {
+                console.log('3')
+
+                if (media) {
+    
+                    const mediaPath = './downloaded-media/';
+    
+                    if (!fs.existsSync(mediaPath)) {
+                        fs.mkdirSync(mediaPath);
+                    }
+    
+    
+                    const extension = mime.extension(media.mimetype);
+    
+                    const filename = new Date().getTime();
+    
+                    const fullFilename = mediaPath + filename + '.' + extension;
+    
+                    // Save t o file
+                    try {
+                        fs.writeFileSync(fullFilename, media.data, { encoding: 'base64' });
+                        console.log('File downloaded successfully!', fullFilename);
+                        console.log(fullFilename);
+                        MessageMedia.fromFilePath(filePath = fullFilename)
+                        client.sendMessage(message.from, new MessageMedia(media.mimetype, media.data, filename), { sendMediaAsSticker: true,stickerAuthor:nama2,stickerName:nama1} )
+                        fs.unlinkSync(fullFilename)
+                        console.log(`File Deleted successfully!`,);
+                    } catch (err) {
+                        console.log('Failed to save the file:', err);
+                        console.log(`File Deleted successfully!`,);
+                    }
+                }
+            });
+        }
+    }
+});
+
+client.on('message', async (message) => {
     if(message.body === '!sticker' || message.body === '!s'){
         if(message.hasMedia){
            message.downloadMedia().then(media => {
