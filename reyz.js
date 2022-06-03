@@ -471,15 +471,12 @@ client.on('message', async (msg) => {
 
 client.on('message', async (message) => {
     if(message.body.startsWith('!st ')){
-        console.log('1')
         const nam = message.body.slice(4)
         const nama = nam.split('+')
         const nama1 = nama[0]
         const nama2 = nama[1]
         if(message.hasMedia){
-            console.log('2')
            message.downloadMedia().then(media => {
-                console.log('3')
 
                 if (media) {
     
@@ -898,6 +895,7 @@ ${pag}
 ══════════════
 👾!sticker
 👾!s
+👾!st sticker name + sticker author
 ══════════════
 *BMKG*
 ══════════════
