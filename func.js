@@ -135,7 +135,7 @@ function styletext(teks) {
             })
             resolve(hasil)
         }).catch (err => {
-            console.log(err)
+            console.log(err) 
         })
     })
 }
