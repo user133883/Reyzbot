@@ -179,7 +179,27 @@ sumber : primbon.com
 })
 
 client.on('message', async (msg) => {
-    const pe = msg.boy
+    if (msg.body.startsWith('!font ')) {
+        const teks = msg.body.slice(6)
+        try{
+            ryz.styletext(teks).then((res, err) => {
+                if (err) return msg.reply('terjadi error !')
+                let text = " "
+                for(let nam of res) {
+                    const nams = nam.name
+                    const ress = nam.result
+                    text += `✎ *${nams}* : ${ress}\n\n`
+                }
+                msg.reply(text)
+            })
+        }catch (err) {
+            console.log(err)
+        }
+    }
+})
+
+client.on('message', async (msg) => {
+    const pe = msg.body
     if(msg.body.startsWith('!apakah')) {
         const pesan = ['iya','mungkin sih','g tau saya','tidak','tidak mungkin','sepertinya iya','sepertinya tidak','sudah pasti tidak','iya iya iya','yoi','iya in','mungkin','yes']
         const hasil = (random_item(pesan))
@@ -326,7 +346,6 @@ client.on('message', async (msg) => {
     }
 })
 
-
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!lirik ')) {
         const link = msg.body.slice(7);
@@ -392,7 +411,6 @@ client.on('message', async (msg) => {
         }
     }
 });
-
 
 client.on('message', async (msg) => {
     if(msg.body.startsWith('!pint ')) {
@@ -588,9 +606,6 @@ client.on('message', async (message) => {
      }
 });
 
-
-
-
 client.on('group_join', async (notification) => {
     const chat = await notification.getChat()
     const chatid = chat.id._serialized
@@ -663,8 +678,13 @@ client.on('message', async (msg) => {
     if(msg.body === 'owner 👤') {
         //if(msg.type === "buttons_response")
         //console.log(msg)
-        const chat = await msg.getChat();
-        chat.sendMessage('https://wa.me/+6282293219613s')
+        const vcard = 'BEGIN:VCARD\n'
+        + 'VERSION:3.0\n' 
+        + 'FN:owner bot\n' 
+        + 'ORG:ryz;\n'
+        + 'TEL;type=CELL;type=VOICE;waid=6282293219613:+6282293219613\n' 
+        + 'END:VCARD'
+        client.sendMessage(msg.from,vcard,{parseVCards:true}) 
     }else if(msg.body === 'rules 📚') {
         msg.reply(`
         ⚠️ ＲＵＬＥＳ ＢＯＴ ⚠️
