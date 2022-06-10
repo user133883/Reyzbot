@@ -846,12 +846,6 @@ ${pag}
 📱 device = ${msg.deviceType}
 
 ═════════════
-    *WAKTU LAINNYA*
-
-⏰wit = ${wit}
-⏰wita = ${wita}
-⏰wib = ${wib}
-═════════════
 
     🚀 *DAFTAR MENU BOT* 🚀
 
@@ -900,6 +894,7 @@ ${pag}
 👾!time (text)
 👾!ping
 👾!cocok "nama kamu + nama pasangan"
+👾!font (text)
 ══════════════
 *TRANSLATE*
 ══════════════
