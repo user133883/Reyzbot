@@ -659,7 +659,7 @@ client.on('message', async (msg) => {
             const start = async function(a, b) {
                 const media = MessageMedia.fromFilePath('./tts.mp3')
                 const chat = await msg.getChat()
-                chat.sendMessage(media)
+                chat.sendMessage(media, {sendAudioAsVoice:true})
             }
             start();
           });
