@@ -1069,63 +1069,46 @@ client.on('message', async (msg) => {
 */
 
 
+spam_data = []
+//600000 !hidetag dan !everyone di kasih limit 10 menit :v, supaya kagak ke spam tag 
 client.on('message', async (msg) => {
     const chat = await msg.getChat();
-    const authorId = msg.author;
+    const aut = msg.author;
     if(chat.isGroup) {
-        if(msg.body === '!everyone') {
-        
-            let text = "";
-            let mentions = [];
-    
-            for(let participant of chat.participants) {
-                const contact = await client.getContactById(participant.id._serialized);
-                mentions.push(contact);
-                text += `@${participant.id.user} `;
-            }
-            for(let participant of chat.participants) {
-                if(participant.id._serialized === authorId ) {
-                    if (participant.isAdmin) {
-                        try {
-                            await chat.sendMessage(text, { mentions });
-                            break;
-                        } catch (err) {
-                            try {
-                                msg.reply('terjadi error')
-                                break;
-                            }catch {
-                                console.log(err)
-                                break;
-                            }
-                        }
-                    }
+        if(msg.body.startsWith('!hidetag ')) {
+            if (spam_data.includes(aut)) {
+                msg.reply('anda sedang terkena limit 10 menit !')
+            }else {
+                function del() {
+                    spam_data.splice(authorId, 1)
                 }
-            }
-    
-        }else if(msg.body.startsWith('!everyone ')) {
-            const tex = msg.body.slice(10);
+                setTimeout(del, 600000);
+                const tex = msg.body.slice(8);
+                const authorId = msg.author;
+                
+                let text = `${tex}`;
+                let mentions = [];
             
-            let text = `${tex} `;
-            let mentions = [];
-    
-            for(let participant of chat.participants) {
-                const contact = await client.getContactById(participant.id._serialized);
-                mentions.push(contact);
-                text += `@${participant.id.user} `;
-            }
-            for(let participant of chat.participants) {
-                if(participant.id._serialized === authorId ) {
-                    if (participant.isAdmin) {
-                        try {
-                            await chat.sendMessage(text, { mentions });
-                            break;
-                        } catch (err) {
+                for(let participant of chat.participants) {
+                    const contact = await client.getContactById(participant.id._serialized);
+                    mentions.push(contact);
+                   
+                }
+                for(let participant of chat.participants) {
+                    if(participant.id._serialized === authorId ) {
+                        if (participant.isAdmin) {
                             try {
-                                msg.reply('terjadi error')
+                                await chat.sendMessage(text, { mentions });
+                                spam_data.push(aut)
                                 break;
-                            }catch {
-                                console.log(err)
-                                break;
+                            } catch (err) {
+                                try {
+                                    msg.reply('terjadi error')
+                                    break;
+                                }catch {
+                                    console.log(err)
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1135,34 +1118,81 @@ client.on('message', async (msg) => {
     }
 });
 
+
 client.on('message', async (msg) => {
     const chat = await msg.getChat();
+    const authorId = msg.author;
     if(chat.isGroup) {
-        if(msg.body.startsWith('!hidetag ')) {
-            const tex = msg.body.slice(8);
-            const authorId = msg.author;
-            
-            let text = `${tex}`;
-            let mentions = [];
+        if(msg.body === '!everyone') {
+            if (spam_data.includes(authorId)) {
+                msg.reply('anda sedang terkena limit 10 menit !')
+            }else {
+                function del() {
+                    spam_data.splice(authorId, 1)
+                }
+                setTimeout(del, 600000);
+                let text = "";
+                let mentions = [];
         
-            for(let participant of chat.participants) {
-                const contact = await client.getContactById(participant.id._serialized);
-                mentions.push(contact);
-               
-            }
-            for(let participant of chat.participants) {
-                if(participant.id._serialized === authorId ) {
-                    if (participant.isAdmin) {
-                        try {
-                            await chat.sendMessage(text, { mentions });
-                            break;
-                        } catch (err) {
+                for(let participant of chat.participants) {
+                    const contact = await client.getContactById(participant.id._serialized);
+                    mentions.push(contact);
+                    text += `@${participant.id.user} `;
+                }
+                for(let participant of chat.participants) {
+                    if(participant.id._serialized === authorId ) {
+                        if (participant.isAdmin) {
                             try {
-                                msg.reply('terjadi error')
+                                await chat.sendMessage(text, { mentions });
+                                spam_data.push(authorId)
                                 break;
-                            }catch {
-                                console.log(err)
+                            } catch (err) {
+                                try {
+                                    msg.reply('terjadi error')
+                                    break;
+                                }catch {
+                                    console.log(err)
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }else if(msg.body.startsWith('!everyone ')) {
+            if (spam_data.includes(authorId)) {
+                msg.reply('anda sedang terkena limit 10 menit !')
+            }else {
+                function del() {
+                    spam_data.splice(authorId, 1)
+                }
+                setTimeout(del, 600000);
+                const tex = msg.body.slice(10);
+            
+                let text = `${tex} `;
+                let mentions = [];
+        
+                for(let participant of chat.participants) {
+                    const contact = await client.getContactById(participant.id._serialized);
+                    mentions.push(contact);
+                    text += `@${participant.id.user} `;
+                }
+                for(let participant of chat.participants) {
+                    if(participant.id._serialized === authorId ) {
+                        if (participant.isAdmin) {
+                            try {
+                                await chat.sendMessage(text, { mentions });
+                                spam_data.push(authorId)
+                                console.log(spam_data)
                                 break;
+                            } catch (err) {
+                                try {
+                                    msg.reply('terjadi error')
+                                    break;
+                                }catch {
+                                    console.log(err)
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1535,13 +1565,13 @@ client.on('message', async (msg) => {
                     if (participant.isAdmin) {
                         if(ket === 'on'){
                             const chatId = chat.id._serialized
-                            antilink.push(chatId)
+                            _welcome.push(chatId)
                             fs.writeFileSync('./database/welcome.json', JSON.stringify(_welcome))
                             msg.reply('welcome di grup ini aktif !')
                         }else if(ket === 'off') {
                             try {
                                  const chatId = chat.id._serialized
-                                 antilink.splice(chatId, 1)
+                                 _welcome.splice(chatId, 1)
                                  fs.writeFileSync('./database/welcome.json', JSON.stringify(_welcome))
                                  msg.reply('welcome di grup ini di nonaktif kan !')
                            }catch (err) {
@@ -1565,13 +1595,13 @@ client.on('message', async (msg) => {
                     if (participant.isAdmin) {
                         if(ket === 'on'){
                             const chatId = chat.id._serialized
-                            antilink.push(chatId)
+                            _left.push(chatId)
                             fs.writeFileSync('./database/left.json', JSON.stringify(_left))
                             msg.reply('pesan selamat tinggal di grup ini aktif !')
                         }else if(ket === 'off') {
                             try {
                                  const chatId = chat.id._serialized
-                                 antilink.splice(chatId, 1)
+                                 _left.splice(chatId, 1)
                                  fs.writeFileSync('./database/left.json', JSON.stringify(_left))
                                  msg.reply('pesan selamat tinggal di grup ini di nonaktif kan !')
                            }catch (err) {
