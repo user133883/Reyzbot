@@ -1,6 +1,6 @@
 FROM node:16
 
-RUN apt-get install ffmpeg
+RUN apt-get update && apt-get install ffmpeg
 
 COPY package.json .
 
