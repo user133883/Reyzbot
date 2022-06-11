@@ -145,6 +145,31 @@ client.on('message', async (msg) => {
 })
 
 client.on('message', async (msg) => {
+    if(msg.body.startsWith('!google ')) {
+        const teks = msg.body.slice(8)
+        try{
+            ryz.google(teks).then(res => {
+                let text = "*RESULT*\n\n"
+                for(let hasil of res) {
+                    const link = hasil.link
+                    const title = hasil.title
+                    const des = hasil.snippet
+                    text += `title = ${title}\nlink = ${link}\ndes = ${des}\n\n`
+                }
+                msg.reply(text)
+            })
+        }catch (err) {
+            try {
+                msg.reply('opss terjadi error')
+            }catch (err) {
+                console.log(err)
+            }
+        }
+
+    }
+});
+
+client.on('message', async (msg) => {
     if(msg.body.startsWith('!cocok ')) {
         const nam = msg.body.slice(7)
         const nama = nam.split('+')
