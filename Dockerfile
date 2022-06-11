@@ -1,5 +1,9 @@
 FROM node:16
 
+RUN ffmpeg
+
+COPY package.json .
+
 RUN npm install
 
 COPY . .
