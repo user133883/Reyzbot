@@ -19,7 +19,7 @@ const { MongoStore } = require('wwebjs-mongo');
 const mongoose = require('mongoose');
 const { Client, Buttons, List, MessageMedia, LocalAuth, LegacySessionAuth, RemoteAuth } = require('whatsapp-web.js');
 
-mongoose.connect("use your mongodb database 😁").then(() => {
+mongoose.connect("connect to your mongodb database 😁").then(() => {
     const store = new MongoStore({ mongoose: mongoose });
     const client = new Client({
         restartOnAuthFail: true,
