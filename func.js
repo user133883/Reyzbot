@@ -82,48 +82,6 @@ function youtube(link){
 	})
 }
 
-function chara(query) {
-	return new Promise((resolve, reject) => {
-		axios.get('https://www.wallpaperflare.com/search?wallpaper='+ query,{
-			headers: {
-				"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-				"cookie": "_ga=GA1.2.863074474.1624987429; _gid=GA1.2.857771494.1624987429; __gads=ID=84d12a6ae82d0a63-2242b0820eca0058:T=1624987427:RT=1624987427:S=ALNI_MaJYaH0-_xRbokdDkQ0B49vSYgYcQ"
-			}
-		})
-		.then(({ data }) => {
-			const $ = cheerio.load(data)
-			const result = [];
-			$('#gallery > li > figure > a').each(function(a, b) {
-				result.push($(b).find('img').attr('data-src'))
-			})
-			resolve(result)
-		})
-	.catch({status: 'err'})
-	})
-}
-
-function lirik(judul){
-	return new Promise(async(resolve, reject) => {
-   		axios.get('https://www.musixmatch.com/search/' + judul)
-   		.then(async({ data }) => {
-   		const $ = cheerio.load(data)
-   		const hasil = {};
-   		let limk = 'https://www.musixmatch.com'
-   		const link = limk + $('div.media-card-body > div > h2').find('a').attr('href')
-	   		await axios.get(link)
-	   		.then(({ data }) => {
-		   		const $$ = cheerio.load(data)
-		   		hasil.thumb = 'https:' + $$('div.col-sm-1.col-md-2.col-ml-3.col-lg-3.static-position > div > div > div').find('img').attr('src')
-		  		$$('div.col-sm-10.col-md-8.col-ml-6.col-lg-6 > div.mxm-lyrics').each(function(a,b) {
-		   hasil.lirik = $$(b).find('span > p > span').text() +'\n' + $$(b).find('span > div > p > span').text()
-		   })
-	   })
-	   resolve(hasil)
-   })
-   .catch(reject)
-   })
-}
-
 function google(query) {
     return new Promise((resolve, reject) => {
         const encodedString = encodeURI(query);
@@ -168,6 +126,49 @@ function google(query) {
     })
 }
 
+function chara(query) {
+	return new Promise((resolve, reject) => {
+		axios.get('https://www.wallpaperflare.com/search?wallpaper='+ query,{
+			headers: {
+				"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+				"cookie": "_ga=GA1.2.863074474.1624987429; _gid=GA1.2.857771494.1624987429; __gads=ID=84d12a6ae82d0a63-2242b0820eca0058:T=1624987427:RT=1624987427:S=ALNI_MaJYaH0-_xRbokdDkQ0B49vSYgYcQ"
+			}
+		})
+		.then(({ data }) => {
+			const $ = cheerio.load(data)
+			const result = [];
+			$('#gallery > li > figure > a').each(function(a, b) {
+				result.push($(b).find('img').attr('data-src'))
+			})
+			resolve(result)
+		})
+	.catch(err => {
+		console.log(err)
+		})
+	})
+}
+
+function lirik(judul){
+	return new Promise(async(resolve, reject) => {
+   		axios.get('https://www.musixmatch.com/search/' + judul)
+   		.then(async({ data }) => {
+   		const $ = cheerio.load(data)
+   		const hasil = {};
+   		let limk = 'https://www.musixmatch.com'
+   		const link = limk + $('div.media-card-body > div > h2').find('a').attr('href')
+	   		await axios.get(link)
+	   		.then(({ data }) => {
+		   		const $$ = cheerio.load(data)
+		   		hasil.thumb = 'https:' + $$('div.col-sm-1.col-md-2.col-ml-3.col-lg-3.static-position > div > div > div').find('img').attr('src')
+		  		$$('div.col-sm-10.col-md-8.col-ml-6.col-lg-6 > div.mxm-lyrics').each(function(a,b) {
+		   hasil.lirik = $$(b).find('span > p > span').text() +'\n' + $$(b).find('span > div > p > span').text()
+		   })
+	   })
+	   resolve(hasil)
+   })
+   .catch(reject)
+   })
+}
 
 function styletext(teks) {
     return new Promise((resolve, reject) => {
@@ -185,8 +186,33 @@ function styletext(teks) {
     })
 }
 
+function tebakgambar() {
+	return new Promise(async(resolve, reject) => {
+    axios.get('https://jawabantebakgambar.net/all-answers/')
+    .then(({ data }) => {
+    const $ = cheerio.load(data)
+    const result = [];
+    let random = Math.floor(Math.random() * 2836) + 2;
+    let link2 = 'https://jawabantebakgambar.net'
+    $(`#images > li:nth-child(${random}) > a`).each(function(a, b) {
+    const img = link2 + $(b).find('img').attr('data-src')
+    const jwb = $(b).find('img').attr('alt')
+    result.push({
+    	message: 'By Hexagon',
+    	image: img,
+    	jawaban: jwb
+    })
+
+    	resolve(result)
+    })
+    	})
+    .catch(reject)
+	})
+}
+
 module.exports.styletext = styletext
 module.exports.youtube = youtube
 module.exports.chara = chara
 module.exports.lirik = lirik
 module.exports.google = google
+module.exports.tebakgambar = tebakgambar
